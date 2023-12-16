@@ -9,3 +9,4 @@ MobileSAM/app/assets/*.png
 __pycache__
 lightning_logs
 MobileSAM/mobile_sam/__pycache__/*
+MobileSAM/weights

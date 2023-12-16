@@ -29,7 +29,8 @@ def get_metadata(coco):
       image_name = coco.imgs[img_id]['file_name']
       mask = coco.annToMask(anns[0])
       for i in range(len(anns[1:])):
-        mask = np.bitwise_or(mask, coco.annToMask(anns[i]))
+        if (anns[i]['category_id']==1):
+          mask = np.bitwise_or(mask, coco.annToMask(anns[i]))
       yield [image_name, mask]
 
 def create_coco_hdf5(path, num_images, image_shape):
@@ -67,30 +68,29 @@ def pad_image(image_tensor):
   image_tensor = F.pad(image_tensor, [padding_left, padding_top, padding_right, padding_bottom])
   return image_tensor
 
-def coco_hdf5(data_path, train_path, image_shape):
+def coco_hdf5(data_path, hdf5_path, weights_path, image_shape):
   DEVICE = 'cuda'
-  weights_path = '/home/skn/arpl/Projects/DL_Project/MobileSAM/weights/mobile_sam.pt'
-  hdf5_path = '/home/skn/arpl/Projects/DL_Project/resources/data/coco/train.hdf5'
+  weights_path = weights_path +'mobile_sam.pt'
 
   encoder = MobileSAM(weights_path)
   encoder.to(device= DEVICE)
   encoder.eval()
   
-  train_data = COCO("/home/skn/arpl/Projects/DL_Project/resources/data/coco/annotations/instances_train2017.json")
+  train_data = COCO(data_path + "/annotations/instances_train2017.json")
   train_len = sum([1 for _ in get_metadata(train_data)])
 
   # create hdf5 train datasets
-  train_hdf5, train_images, train_masks, image_embeddings = create_coco_hdf5(train_path + "train.hdf5", train_len, image_shape)
+  train_hdf5, train_images, train_masks, image_embeddings = create_coco_hdf5(hdf5_path + "train.hdf5", train_len, image_shape)
 
   # fill training dataset
   i = 0
   for image_name, mask in tqdm(get_metadata(train_data), total=train_len, desc="Image"):
-    image = cv2.imread(train_path + "person_images/" + image_name)
+    image = cv2.imread(data_path + "train_imgs/" + image_name)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    cv2.imshow('image', image)
-    cv2.imshow('mask', (mask > 0.5).astype(np.uint8)*255.0)
-    cv2.waitKey(0)
+    # cv2.imshow('image', image)
+    # cv2.imshow('mask', (mask > 0.5).astype(np.uint8)*255.0)
+    # cv2.waitKey(0)
 
     input = preprocess_image(image, image_shape)
     copy = input
@@ -119,9 +119,10 @@ def coco_hdf5(data_path, train_path, image_shape):
 def main():
   folder_path = os.getcwd()+"/"
   resources_path = folder_path + "resources/"
-  data_path = resources_path + "person_images/"
-  train_path = "/home/skn/arpl/Projects/DL_Project/resources/data/coco/"
-  coco_hdf5(data_path, train_path, image_shape=(1024, 1024))
+  data_path = resources_path + "data/"
+  hdf5_path = resources_path + "hdf5/"
+  weights_path = resources_path + "weights/"
+  coco_hdf5(data_path, hdf5_path, weights_path, image_shape=(1024, 1024))
 
 if __name__ == '__main__':
   main()
