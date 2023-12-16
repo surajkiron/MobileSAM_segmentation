@@ -1,7 +1,6 @@
 resources/data/*
 resources/experiments/*
 resources/hdf5/*
-resources/weights/*
 MobileSAM/assets/*.jpg
 MobileSAM/assets/*.png
 MobileSAM/app/assets/*.jpg
@@ -9,4 +8,3 @@ MobileSAM/app/assets/*.png
 __pycache__
 lightning_logs
 MobileSAM/mobile_sam/__pycache__/*
-MobileSAM/weights
