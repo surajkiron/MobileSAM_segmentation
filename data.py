@@ -43,6 +43,4 @@ def load_dataset(mode, file_path, batch_size, shuffle, num_workers, pin_memory):
   batch_size = batch_size if batch_size > 0 else len(dataset)
   loader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers, pin_memory=pin_memory)
   print('... Loaded', dataset.data_len, 'images')
-  # print('|Image| = (%i, %i, %i)' % (dataset.batch, dataset.height, dataset.width))
-  # print('|Mask| = (%i, %i)' % (dataset.height, dataset.width))
   return dataset, loader
