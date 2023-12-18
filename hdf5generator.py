@@ -70,7 +70,7 @@ def coco_hdf5(data_path, hdf5_path, weights_path, image_shape):
   train_len = sum([1 for _ in get_metadata(train_data)])
 
   # create hdf5 train datasets
-  train_hdf5, train_masks, image_embeddings = create_coco_hdf5(hdf5_path + "val900.hdf5", train_len, image_shape)
+  train_hdf5, train_masks, image_embeddings = create_coco_hdf5(hdf5_path + "val.hdf5", train_len, image_shape)
 
   # fill training dataset
   i = 0

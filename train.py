@@ -18,8 +18,8 @@ if __name__ == '__main__':
   args = parse_args()
 
   # set global paths
-  folder_path = '/'.join(sys.path[0].split('/')[:-1]) + '/'
-  resources_path = folder_path + 'DL_Project/resources/'
+  folder_path = os.getcwd() + "/"
+  resources_path = folder_path + 'resources/'
   hdf5_path = resources_path + 'hdf5/'
   experiment_path = resources_path + 'experiments/' + time.strftime('%Y%m%d-%H%M%S') + '_' + str(args.run_id) + '/'
   check_folder_paths([experiment_path + 'checkpoints', experiment_path + 'predictions'])
@@ -51,7 +51,7 @@ if __name__ == '__main__':
                                              pin_memory=True)
   
   valid_dataset, valid_loader = load_dataset(mode='validating',
-                                            file_path=hdf5_path + 'valid.hdf5',
+                                            file_path=hdf5_path + 'val.hdf5',
                                             batch_size=args.batch_size,
                                             shuffle=args.shuffle,
                                             num_workers=16,
@@ -65,4 +65,4 @@ if __name__ == '__main__':
                                       check_val_every_n_epoch=args.valid_frequency,
                                       logger=True,
                                       callbacks=[checkpoint_callback])
-  trainer.fit(network, train_loader)
+  trainer.fit(network, train_loader, val_dataloaders=valid_loader)

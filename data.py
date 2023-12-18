@@ -11,10 +11,10 @@ class MobileSAMDataset(Dataset):
 
     # load info of hdf5
     data_file = h5py.File(hdf5_path, 'r')
-    self.data_len = len(data_file['images'])
-    self.batch = data_file['images'][()][0].shape[0]
-    self.height = data_file['images'][()][0].shape[1]
-    self.width = data_file['images'][()][0].shape[2]
+    self.data_len = len(data_file['masks'])
+    # self.batch = data_file['images'][()][0].shape[0]
+    # self.height = data_file['images'][()][0].shape[1]
+    # self.width = data_file['images'][()][0].shape[2]
 
     # self.mask_len = len(data_file['masks'])
     # self.mask_height     = data_file['masks'][()][0].shape[0]
@@ -43,6 +43,6 @@ def load_dataset(mode, file_path, batch_size, shuffle, num_workers, pin_memory):
   batch_size = batch_size if batch_size > 0 else len(dataset)
   loader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers, pin_memory=pin_memory)
   print('... Loaded', dataset.data_len, 'images')
-  print('|Image| = (%i, %i, %i)' % (dataset.batch, dataset.height, dataset.width))
-  print('|Mask| = (%i, %i)' % (dataset.height, dataset.width))
+  # print('|Image| = (%i, %i, %i)' % (dataset.batch, dataset.height, dataset.width))
+  # print('|Mask| = (%i, %i)' % (dataset.height, dataset.width))
   return dataset, loader

@@ -14,3 +14,4 @@ unzip resources/data/test2017.zip -d resources/data
 
 wget -P resources/DATA http://images.cocodataset.org/annotations/annotations_trainval2017.zip
 unzip resources/DATA/annotations_trainval2017.zip -d resources/data
+
