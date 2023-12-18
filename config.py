@@ -3,6 +3,7 @@ import argparse
 def parse_args():
   print('Parsing arguments ...')
   parser = argparse.ArgumentParser(description='Arguments for learning image dynamics')
+  parser.add_argument('-W', '--weights_path',    type=str,      default='')
   parser.add_argument('-r', '--run_id',          type=int,      default=0)
   parser.add_argument('-d', '--gpu_id',          type=int,      default=0)
   parser.add_argument('-e', '--epochs',          type=int,      default=40)
@@ -17,6 +18,8 @@ def parse_args():
   parser.add_argument('--num_devices',           type=int,      default=1)
   parser.add_argument('--valid_frequency',       type=int,      default=1)
   parser.add_argument('--plot_frequency',        type=int,      default=1)
+  parser.add_argument('--seed',                  type=int,      default=42)
+
   return parser.parse_args()
 
 def save_args(args, file_path):

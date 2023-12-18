@@ -1,0 +1,6 @@
+torch
+pytorch_lightning
+monai
+h5py
+pycocotools
+tqdm
